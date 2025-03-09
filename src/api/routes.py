@@ -27,7 +27,7 @@ def handle_hello():
 def handle_token():
     email = request.json.get('email')
     password = request.json.get('password')
-
+    
     if email is None:
         return jsonify({"msg": "Email is required"}), 400
     if password is None:
@@ -40,3 +40,39 @@ def handle_token():
     user = user.serialize()
     token = create_access_token(identity=user)
     return jsonify({'token': token, "user": user}), 200
+
+
+
+@api.route('/register', methods=['POST'])
+def handle_register():
+    email = request.json.get('email')
+    password = request.json.get('password')
+    is_active = request.json.get('is_active', True)  # Por defecto será `True` si no se proporciona.
+
+    # Verificación básica
+    if email is None:
+        return jsonify({"msg": "Email is required"}), 400
+    if password is None:
+        return jsonify({"msg": "Password is required"}), 400
+
+    # Asegúrate de que el valor de `is_active` sea un booleano
+    if not isinstance(is_active, bool):
+        return jsonify({"msg": "'is_active' must be a boolean."}), 400
+
+    # Crear un nuevo usuario o autenticar uno existente
+    user = User.query.filter_by(email=email, password=password).first()
+    
+    if not user:
+        # Si no existe un usuario con el email y la contraseña, crear uno nuevo.
+        user = User(email=email, password=password, is_active=is_active)
+        db.session.add(user)
+        db.session.commit()
+
+    # Serializar el usuario
+    user_serialized = user.serialize()
+
+
+    # Responder con el token y los datos del usuario
+    return jsonify({ "user": user_serialized}), 200
+
+
