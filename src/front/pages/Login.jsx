@@ -5,11 +5,13 @@ const Login = () => {
   const [store, dispatch] = useReducer(storeReducer, initialStore);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isActive, setIsActive] = useState(false);
+
 
   const handleLogin = async (e) => {
     e.preventDefault(); // Evitar recarga de página
 
-    const response = await login(dispatch, email, password);
+    const response = await login(dispatch, email, password,isActive);
 
     if (response.error) {
       alert("Error: " + response.error);
@@ -20,6 +22,7 @@ const Login = () => {
 
     setEmail("");
     setPassword("");
+    isActive(false);
   };
 
   return (
@@ -49,6 +52,18 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+          </div>
+          <div className="mb-3 form-check">
+            <input
+              type="checkbox"
+              className="form-check-input"
+              id="isActive"
+              value={isActive}
+              onChange={(e) => setIsActive(e.target.value)}
+            />
+            <label className="form-check-label" htmlFor="isActive">
+              Activo
+            </label>
           </div>
           <button type="submit" className="btn btn-primary">
             Iniciar Sesión

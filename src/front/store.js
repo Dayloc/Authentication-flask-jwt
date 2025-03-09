@@ -5,16 +5,16 @@ export const initialStore = () => {
     users: [],
   };
 };
-export const login = async (dispatch, email, password) => {
+export const login = async (dispatch, email, password,isActive) => {
   try {
     const response = await fetch(
-      "https://cautious-space-memory-4jj4xwj6pqvq26w6-3001.app.github.dev/api/hello/token",
+      "https://cautious-space-memory-4jj4xwj6pqvq26w6-3001.app.github.dev/api/register",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password ,isActive}),
       }
     );
 
