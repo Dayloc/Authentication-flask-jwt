@@ -22,7 +22,7 @@ export const login = async (dispatch, email, password) => {
     if (!response.ok) {
       const errorData = await response.json();
       console.error("Error en el login:", errorData);
-      return { error: errorData.message || "Error desconocido en login" };
+      return { error: errorData.message || "Usuario no registrado, por favor registrese." };
     }
 
     const data = await response.json();

@@ -1,20 +1,21 @@
 import React, { useState, useReducer } from "react";
+import { useNavigate } from "react-router-dom"; // Importar useNavigate
 import storeReducer, { initialStore, login } from "./../store";
 
 const Login = () => {
   const [store, dispatch] = useReducer(storeReducer, initialStore);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
-
+  const navigate = useNavigate(); // Inicializar useNavigate
 
   const handleLogin = async (e) => {
-    e.preventDefault(); // Evitar recarga de página
+    e.preventDefault();
 
     const response = await login(dispatch, email, password);
 
     if (response.error) {
       alert("Error: " + response.error);
+      navigate("/register"); // Redirigir a /register si hay error
     } else {
       alert("Login exitoso, token guardado.");
       console.log("Token recibido:", store.token);
@@ -22,12 +23,14 @@ const Login = () => {
 
     setEmail("");
     setPassword("");
- 
   };
 
   return (
     <div className="container justify-content-center align-items-center d-flex">
+      
+      
       <div>
+        
         <form onSubmit={handleLogin}>
           <div className="mb-3">
             <label htmlFor="email" className="form-label">
@@ -53,7 +56,7 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-         
+
           <button type="submit" className="btn btn-primary">
             Login
           </button>
@@ -64,3 +67,4 @@ const Login = () => {
 };
 
 export default Login;
+

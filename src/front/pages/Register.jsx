@@ -16,8 +16,8 @@ const handleRegister = async (e) => {
     if (response.error) {
       alert("Error: " + response.error);
     } else {
-      alert("Login exitoso, token guardado.");
-      console.log("Token recibido:", store.token);
+      alert("Usuario creado con exito.");
+      
     }
 
     setEmail("");
@@ -25,8 +25,8 @@ const handleRegister = async (e) => {
     isActive(false);
   };
   return (
-    <div className="container justify-content-center align-items-center d-flex">
-    <div>
+    <div className="container justify-content-center align-items-center d-flex bg-black text-white">
+    <div className="mt-3">
       <form onSubmit={handleRegister}>
         <div className="mb-3">
           <label htmlFor="email" className="form-label">
@@ -64,7 +64,7 @@ const handleRegister = async (e) => {
             Activo
           </label>
         </div>
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="btn btn-primary mb-5">
           Register
         </button>
       </form>
