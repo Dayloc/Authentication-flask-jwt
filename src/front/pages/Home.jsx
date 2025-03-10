@@ -2,6 +2,7 @@ import React, { useEffect } from "react"
 import rigoImageUrl from "../assets/img/rigo-baby.jpg";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 
+
 export const Home = () => {
 
 	const { store, dispatch } = useGlobalReducer()
@@ -29,6 +30,12 @@ export const Home = () => {
 	}
 
 	useEffect(() => {
+		const token=localStorage.getItem("token")
+		if (!token) {
+			window.location("/login")
+		} else {
+			window.location("/profile")
+		}
 		loadMessage()
 	}, [])
 

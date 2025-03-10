@@ -13,7 +13,7 @@ export const Layout = () => {
             <Navbar />
             <Outlet />
           
-            <Profile />
+      
             <Footer />
         </ScrollToTop>
     )

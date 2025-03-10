@@ -38,8 +38,11 @@ def handle_token():
     if not user:
         return jsonify({"msg": "User not found"}), 404
 
-    user = user.serialize()
-    token = create_access_token(identity=user['id'])
+    user = user.serialize()  # Asumiendo que esto devuelve un diccionario
+
+    # Asegurar que solo el ID se use como identity
+    token = create_access_token(identity=str(user["id"]))
+
     return jsonify({'token': token, "user": user}), 200
 
 
@@ -72,12 +75,19 @@ def handle_register():
 @jwt_required()
 def handle_user():
     id_user = get_jwt_identity()
+
+    # Verificar qué valor tiene id_user
+    print(f"ID del usuario extraído del token: {id_user}")
+
+    # Asegurar que sea una cadena antes de consultar la DB
+    if not isinstance(id_user, str):
+        return jsonify({"error": "Subject must be a string"}), 400
+
     user = User.query.get(id_user)
     if not user:
         return jsonify({"msg": "User not found"}), 404
 
-    user = user.serialize()
-    return jsonify({"user": user}), 200
+    return jsonify({"user": user.serialize()}), 200
 
 
 @api.errorhandler(Exception)
